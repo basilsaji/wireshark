@@ -736,11 +736,11 @@ static dissector_handle_t bgp_handle;
 #define BGP_NLRI_TLV_IPV4_ROUTER_ID_OF_REMOTE_NODE  1030
 #define BGP_NLRI_TLV_IPV6_ROUTER_ID_OF_REMOTE_NODE  1031
 
-#define BGP_NLRI_TLV_NODE_SPF_ALGO_TYPE             1080
+#define BGP_NLRI_TLV_NODE_SPF_ALGO_TYPE             1180
 #define BGP_NLRI_TLV_NODE_SPF_STATUS                1081
-#define BGP_NLRI_TLV_LINK_SPF_STATUS                1082
-#define BGP_NLRI_TLV_PREFIX_SPF_STATUS              1083
-#define BGP_NLRI_TLV_LS_ATTR_SEQ                    1084
+#define BGP_NLRI_TLV_LINK_SPF_STATUS                1182
+#define BGP_NLRI_TLV_PREFIX_SPF_STATUS              1183
+#define BGP_NLRI_TLV_LS_ATTR_SEQ                    1181
 #define BGP_NLRI_TLV_ADMINISTRATIVE_GROUP_COLOR     1088
 #define BGP_NLRI_TLV_MAX_LINK_BANDWIDTH             1089
 #define BGP_NLRI_TLV_MAX_RESERVABLE_LINK_BANDWIDTH  1090
