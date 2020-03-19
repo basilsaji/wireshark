@@ -737,10 +737,10 @@ static dissector_handle_t bgp_handle;
 #define BGP_NLRI_TLV_IPV6_ROUTER_ID_OF_REMOTE_NODE  1031
 
 #define BGP_NLRI_TLV_NODE_SPF_ALGO_TYPE             1180
-#define BGP_NLRI_TLV_NODE_SPF_STATUS                1081
-#define BGP_NLRI_TLV_LINK_SPF_STATUS                1182
-#define BGP_NLRI_TLV_PREFIX_SPF_STATUS              1183
 #define BGP_NLRI_TLV_LS_ATTR_SEQ                    1181
+#define BGP_NLRI_TLV_IPV4_PREFIX_LEN                1182
+#define BGP_NLRI_TLV_IPV6_PREFIX_LEN                1183
+#define BGP_NLRI_TLV_SPF_STATUS                     1184
 #define BGP_NLRI_TLV_ADMINISTRATIVE_GROUP_COLOR     1088
 #define BGP_NLRI_TLV_MAX_LINK_BANDWIDTH             1089
 #define BGP_NLRI_TLV_MAX_RESERVABLE_LINK_BANDWIDTH  1090
@@ -791,9 +791,9 @@ static dissector_handle_t bgp_handle;
 #define BGP_NLRI_TLV_LEN_BGP_ROUTER_ID                  4
 #define BGP_NLRI_TLV_LEN_NODE_FLAG_BITS                 1
 #define BGP_NLRI_TLV_LEN_NODE_SPF_ALGO_TYPE             1
-#define BGP_NLRI_TLV_LEN_NODE_SPF_STATUS                1
-#define BGP_NLRI_TLV_LEN_LINK_SPF_STATUS                1
-#define BGP_NLRI_TLV_LEN_PREFIX_SPF_STATUS              1
+#define BGP_NLRI_TLV_LEN_IPV4_PREFIX_LEN                1
+#define BGP_NLRI_TLV_LEN_IPV6_PREFIX_LEN                1
+#define BGP_NLRI_TLV_LEN_SPF_STATUS                     1
 #define BGP_NLRI_TLV_LEN_LS_ATTR_SEQ                    8
 
 /* draft-gredler-idr-bgp-ls-segment-routing-ext-01 */
@@ -2117,15 +2117,15 @@ static int hf_bgp_ls_tlv_ipv4_router_id_of_remote_node = -1;       /* 1030 */
 static int hf_bgp_ls_tlv_ipv6_router_id_of_remote_node = -1;       /* 1031 */
 
 static int hf_bgp_ls_tlv_node_spf_algo = -1;
-static int hf_bgp_ls_tlv_node_spf_status = -1;
-static int hf_bgp_ls_tlv_link_spf_status = -1;
-static int hf_bgp_ls_tlv_prefix_spf_status = -1;
 static int hf_bgp_ls_tlv_attr_seq_num = -1;
+static int hf_bgp_ls_tlv_ipv4_prefix_len = -1;
+static int hf_bgp_ls_tlv_ipv6_prefix_len = -1;
+static int hf_bgp_ls_tlv_spf_status = -1;
 static int hf_bgp_ls_tlv_node_spf_algo_value = -1;
-static int hf_bgp_ls_tlv_node_spf_status_value = -1;
-static int hf_bgp_ls_tlv_link_spf_status_value = -1;
-static int hf_bgp_ls_tlv_prefix_spf_status_value = -1;
 static int hf_bgp_ls_tlv_attr_seq_num_value = -1;
+static int hf_bgp_ls_tlv_ipv4_prefix_len_value = -1;
+static int hf_bgp_ls_tlv_ipv6_prefix_len_value = -1;
+static int hf_bgp_ls_tlv_spf_status_value = -1;
 
 static int hf_bgp_ls_tlv_administrative_group_color = -1;          /* 1088 */
 static int hf_bgp_ls_tlv_administrative_group_color_value = -1;
@@ -4305,28 +4305,28 @@ decode_link_state_attribute_tlv(proto_tree *tree, tvbuff_t *tvb, gint offset, pa
             proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_node_spf_algo_value, tvb, offset + 4, 1, ENC_NA);
             break;
 
-        case BGP_NLRI_TLV_NODE_SPF_STATUS:
-            tlv_item = proto_tree_add_item(tree, hf_bgp_ls_tlv_node_spf_status, tvb, offset, length + 4, ENC_NA);
+        case BGP_NLRI_TLV_IPV4_PREFIX_LEN:
+            tlv_item = proto_tree_add_item(tree, hf_bgp_ls_tlv_ipv4_prefix_len, tvb, offset, length + 4, ENC_NA);
             tlv_tree = proto_item_add_subtree(tlv_item, ett_bgp_link_state);
             proto_tree_add_item(tlv_tree, hf_bgp_ls_type, tvb, offset, 2, ENC_BIG_ENDIAN);
             proto_tree_add_item(tlv_tree, hf_bgp_ls_length, tvb, offset + 2, 2, ENC_BIG_ENDIAN);
-            proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_node_spf_status_value, tvb, offset + 4, 1, ENC_NA);
+            proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_ipv4_prefix_len_value, tvb, offset + 4, 1, ENC_NA);
             break;
 
-        case BGP_NLRI_TLV_LINK_SPF_STATUS:
-            tlv_item = proto_tree_add_item(tree, hf_bgp_ls_tlv_link_spf_status, tvb, offset, length + 4, ENC_NA);
+        case BGP_NLRI_TLV_IPV6_PREFIX_LEN:
+            tlv_item = proto_tree_add_item(tree, hf_bgp_ls_tlv_ipv6_prefix_len, tvb, offset, length + 4, ENC_NA);
             tlv_tree = proto_item_add_subtree(tlv_item, ett_bgp_link_state);
             proto_tree_add_item(tlv_tree, hf_bgp_ls_type, tvb, offset, 2, ENC_BIG_ENDIAN);
             proto_tree_add_item(tlv_tree, hf_bgp_ls_length, tvb, offset + 2, 2, ENC_BIG_ENDIAN);
-            proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_link_spf_status_value, tvb, offset + 4, 1, ENC_NA);
+            proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_ipv6_prefix_len_value, tvb, offset + 4, 1, ENC_NA);
             break;
 
-        case BGP_NLRI_TLV_PREFIX_SPF_STATUS:
-            tlv_item = proto_tree_add_item(tree, hf_bgp_ls_tlv_prefix_spf_status, tvb, offset, length + 4, ENC_NA);
+        case BGP_NLRI_TLV_SPF_STATUS:
+            tlv_item = proto_tree_add_item(tree, hf_bgp_ls_tlv_spf_status, tvb, offset, length + 4, ENC_NA);
             tlv_tree = proto_item_add_subtree(tlv_item, ett_bgp_link_state);
             proto_tree_add_item(tlv_tree, hf_bgp_ls_type, tvb, offset, 2, ENC_BIG_ENDIAN);
             proto_tree_add_item(tlv_tree, hf_bgp_ls_length, tvb, offset + 2, 2, ENC_BIG_ENDIAN);
-            proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_prefix_spf_status_value, tvb, offset + 4, 1, ENC_NA);
+            proto_tree_add_item(tlv_tree, hf_bgp_ls_tlv_spf_status_value, tvb, offset + 4, 1, ENC_NA);
             break;
 
         case BGP_NLRI_TLV_LS_ATTR_SEQ:
@@ -11025,23 +11025,23 @@ proto_register_bgp(void)
       { &hf_bgp_ls_tlv_node_spf_algo_value,
         { "BGP-LS-SPF ALGO", "bgp.ls.tlv.bgp_node_spf_algo_value", FT_BYTES,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
-      { &hf_bgp_ls_tlv_node_spf_status,
-        { "BGP-LS Node SPF Status TLV", "bgp.ls.tlv.bgp_node_spf_status", FT_NONE,
+      { &hf_bgp_ls_tlv_ipv4_prefix_len,
+        { "BGP-LS IPv4 Prefix Length TLV", "bgp.ls.tlv.bgp_ipv4_prefix_len", FT_NONE,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
-      { &hf_bgp_ls_tlv_node_spf_status_value,
-        { "BGP-LS Node SPF Status", "bgp.ls.tlv.bgp_node_spf_status_value", FT_BYTES,
+      { &hf_bgp_ls_tlv_ipv4_prefix_len_value,
+        { "BGP-LS IPv4 Prefix Length", "bgp.ls.tlv.bgp_ipv4_prefix_len_value", FT_BYTES,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
-      { &hf_bgp_ls_tlv_link_spf_status,
-        { "BGP-LS Link SPF Status TLV", "bgp.ls.tlv.bgp_link_spf_status", FT_NONE,
+      { &hf_bgp_ls_tlv_ipv6_prefix_len,
+        { "BGP-LS IPv6 Prefix Length TLV", "bgp.ls.tlv.bgp_ipv6_prefix_len", FT_NONE,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
-      { &hf_bgp_ls_tlv_link_spf_status_value,
-        { "BGP-LS Link SPF Status", "bgp.ls.tlv.bgp_link_spf_status_value", FT_BYTES,
+      { &hf_bgp_ls_tlv_ipv6_prefix_len_value,
+        { "BGP-LS IPv6 Prefix Length", "bgp.ls.tlv.bgp_ipv6_prefix_len_value", FT_BYTES,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
-      { &hf_bgp_ls_tlv_prefix_spf_status,
-        { "BGP-LS Prefix SPF Status TLV", "bgp.ls.tlv.bgp_prefix_spf_status", FT_NONE,
+      { &hf_bgp_ls_tlv_spf_status,
+        { "BGP-LS SPF Status TLV", "bgp.ls.tlv.bgp_spf_status", FT_NONE,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
-      { &hf_bgp_ls_tlv_prefix_spf_status_value,
-        { "BGP-LS Prefix SPF Status", "bgp.ls.tlv.bgp_prefix_spf_status_value", FT_BYTES,
+      { &hf_bgp_ls_tlv_spf_status_value,
+        { "BGP-LS SPF Status", "bgp.ls.tlv.bgp_spf_status_value", FT_BYTES,
           BASE_NONE, NULL, 0x0, NULL, HFILL}},
       { &hf_bgp_ls_tlv_attr_seq_num,
         { "BGP-LS Sequence TLV", "bgp.ls.tlv.bgp_ls_attr_seq", FT_NONE,
